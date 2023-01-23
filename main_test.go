@@ -14,7 +14,7 @@ type DosDate struct {
 
 func TestRead(t *testing.T) {
 	var dt DosDate
-	if err := bitfield.Read(0x7423, &dt); err != nil {
+	if err := bitfield.Read(uint64(0x7423), &dt); err != nil {
 		t.Fatal(err.Error())
 		return
 	}
