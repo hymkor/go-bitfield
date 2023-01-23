@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func Read(source uint64, result any) error {
+func Unpack(source uint64, result any) error {
 	theType := reflect.TypeOf(result).Elem()
 	theValue := reflect.ValueOf(result).Elem()
 	for i, n := 0, theType.NumField(); i < n; i++ {

@@ -12,9 +12,11 @@ type DosDate struct {
 	Hour   int  `bit:"5"`
 }
 
-func TestRead(t *testing.T) {
+func TestUnpack(t *testing.T) {
+	const packedValue = 0x7423
+
 	var dt DosDate
-	if err := bitfield.Read(uint64(0x7423), &dt); err != nil {
+	if err := bitfield.Unpack(uint64(packedValue), &dt); err != nil {
 		t.Fatal(err.Error())
 		return
 	}

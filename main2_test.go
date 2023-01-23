@@ -12,9 +12,9 @@ type DosDateNG1 struct {
 	Hour   int  `bit:"5"`
 }
 
-func TestTestNg1(t *testing.T) {
+func TestUnpackNg1(t *testing.T) {
 	var dt DosDateNG1
-	if err := bitfield.Read(0x7423, &dt); err == nil {
+	if err := bitfield.Unpack(0x7423, &dt); err == nil {
 		t.Fatal("Any error is not found in invalid structure")
 	} else {
 		println("OK: expect error:", err.Error())
@@ -27,9 +27,9 @@ type DosDateNG2 struct {
 	Hour   *int `bit:"5"`
 }
 
-func TestTestNg2(t *testing.T) {
+func TestUnpackNg2(t *testing.T) {
 	var dt DosDateNG2
-	if err := bitfield.Read(0x7423, &dt); err == nil {
+	if err := bitfield.Unpack(0x7423, &dt); err == nil {
 		t.Fatal("Any error is not found in invalid structure")
 	} else {
 		println("OK: expect error:", err.Error())
