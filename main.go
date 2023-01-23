@@ -63,3 +63,24 @@ func Pack(source any) (uint64, error) {
 	}
 	return result, nil
 }
+
+func UnpackInline(source uint64, bits ...int) []int {
+	result := make([]int, len(bits))
+	for i, bit := range bits {
+		result[i] = int(source & ((1 << bit) - 1))
+		source >>= bit
+	}
+	return result
+}
+
+func PackInline(valueAndBitPair ...int) uint64 {
+	var result uint64
+	for i := len(valueAndBitPair) - 2; i >= 0; i -= 2 {
+		bit := valueAndBitPair[i]
+		value := valueAndBitPair[i+1]
+
+		result <<= uint64(bit)
+		result |= uint64(value & ((1 << bit) - 1))
+	}
+	return result
+}
