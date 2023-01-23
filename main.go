@@ -33,3 +33,33 @@ func Unpack(source uint64, result any) error {
 	}
 	return nil
 }
+
+func Pack(source any) (uint64, error) {
+	theType := reflect.TypeOf(source).Elem()
+	theValue := reflect.ValueOf(source).Elem()
+
+	var result uint64
+	for i := theType.NumField() - 1; i >= 0; i-- {
+		field := theType.Field(i)
+		if bitTag, ok := field.Tag.Lookup("bit"); ok {
+			bit, err := strconv.Atoi(bitTag)
+			if err != nil {
+				return 0, fmt.Errorf("%s: expect number in `bit` tag", field.Name)
+			}
+			result <<= bit
+			mask := ((1 << bit) - 1)
+
+			theField := theValue.Field(i)
+			if theField.CanUint() {
+				// println(field.Name, "set", bitValue, "as uint")
+				result |= theField.Uint() & uint64(mask)
+			} else if theField.CanInt() {
+				// println(field.Name, "set", bitValue, "as int")
+				result |= uint64(theField.Int()) & uint64(mask)
+			} else {
+				return 0, fmt.Errorf("%s: expected the field int or uint", field.Name)
+			}
+		}
+	}
+	return result, nil
+}
